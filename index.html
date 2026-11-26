@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hari Guru - Pelita dalam Kegelapan</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Georgia', serif;
+    }
+
+    body {
+      background-color: #0b1326;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* Canvas Partikel Cahaya & Pengetahuan */
+    #sparkle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Container Utama Scene */
+    .scene-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background: radial-gradient(circle, #1a2a47 0%, #050a14 100%);
+      z-index: 1;
+    }
+
+    /* Siluet Sekolah & Ruang Kelas */
+    .school-silhouette {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 30vh;
+      background: linear-gradient(to top, #000, transparent), 
+                  repeating-linear-gradient(90deg, #091224 0px, #091224 50px, #03070f 50px, #03070f 100px);
+      clip-path: polygon(0% 100%, 0% 30%, 20% 30%, 25% 15%, 35% 15%, 40% 30%, 70% 30%, 75% 20%, 85% 20%, 90% 30%, 100% 30%, 100% 100%);
+      filter: drop-shadow(0 -10px 20px rgba(255, 215, 0, 0.2));
+    }
+
+    /* Kartu Narasi Grafis */
+    .story-card {
+      position: relative;
+      width: 80%;
+      max-width: 700px;
+      padding: 40px;
+      background: rgba(12, 23, 42, 0.85);
+      border: 3px solid #ffcb6b;
+      box-shadow: 0 0 30px rgba(255, 203, 107, 0.25), inset 0 0 15px rgba(255, 203, 107, 0.15);
+      border-radius: 12px;
+      z-index: 3;
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s ease;
+    }
+
+    .story-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .chapter-tag {
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      color: #ffcb6b;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .story-title {
+      font-size: 2.2rem;
+      color: #ffe082;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .story-text {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #e0e6ed;
+      margin-bottom: 30px;
+    }
+
+    /* Tombol Navigasi */
+    .nav-btn {
+      background: linear-gradient(45deg, #ffb300, #ff8f00);
+      border: none;
+      color: #050a14;
+      padding: 12px 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 6px;
+      box-shadow: 0 4px 15px rgba(255, 179, 0, 0.3);
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+      background: linear-gradient(45deg, #ffa000, #ff6f00);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(255, 179, 0, 0.6);
+    }
+
+    /* Vignette Atmosferik */
+    .vignette {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      box-shadow: inset 0 0 120px rgba(0,0,0,0.8);
+      pointer-events: none;
+      z-index: 4;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="sparkle-canvas"></canvas>
+  <div class="vignette"></div>
+
+  <div class="scene-container">
+    <div class="school-silhouette"></div>
+
+    <div class="story-card">
+      <div class="chapter-tag" id="chapter-tag">BAGIAN I — AWAL LANGKAH</div>
+      <h1 class="story-title" id="story-title">Lilin di Dalam Gelap</h1>
+      <p class="story-text" id="story-text">
+        Sebelum mimpi-mimpi besar menemukan bentuknya, ada tangan sabar yang menuntun coretan pertama di papan tulis. Guru bukan sekadar pengajar, melainkan penyala lampu di lorong ketidaktahuan.
+      </p>
+      <button class="nav-btn" onclick="nextScene()">Lanjutkan Kisah ►</button>
+    </div>
+  </div>
+
+  <script>
+    // --- DATA CERITA HARI GURU ---
+    const scenes = [
+      {
+        tag: "BAGIAN I — AWAL LANGKAH",
+        title: "Lilin di Dalam Gelap",
+        text: "Sebelum mimpi-mimpi besar menemukan bentuknya, ada tangan sabar yang menuntun coretan pertama di papan tulis. Guru bukan sekadar pengajar, melainkan penyala lampu di lorong ketidaktahuan."
+      },
+      {
+        tag: "BAGIAN II — PROSES & KESABARAN",
+        title: "Menanam Benih Kebaikan",
+        text: "Merapikan ragu, menjawab pertanyaan tak bertepi, hingga menggenggam asa murid-muridnya. Dari kesabaran yang tak terdengar itu, tunas-tunas cita tumbuh menjadi pohon pengetahuan yang kokoh."
+      },
+      {
+        tag: "BAGIAN III — JEJAK ABADI",
+        title: "Warisan Tanpa Batas Waktu",
+        text: "Tahun berlalu dan raga mungkin terpisah, namun setiap nasihat serta ilmu tetap membimbing langkah. Selamat Hari Guru untuk para arsitek masa depan."
+      }
+    ];
+
+    let currentScene = 0;
+
+    function nextScene() {
+      currentScene = (currentScene + 1) % scenes.length;
+      document.getElementById('chapter-tag').innerText = scenes[currentScene].tag;
+      document.getElementById('story-title').innerText = scenes[currentScene].title;
+      document.getElementById('story-text').innerText = scenes[currentScene].text;
+    }
+
+    // --- ANIMASI PARTIKEL CAHAYA & KERTAS (CANVAS) ---
+    const canvas = document.getElementById('sparkle-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Sparkle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedY = -(Math.random() * 0.8 + 0.3);
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.opacity = Math.random() * 0.7 + 0.3;
+        this.color = Math.random() > 0.4 ? '#ffcb6b' : '#ffffff';
+      }
+
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        this.opacity -= 0.003;
+
+        if (this.y < 0 || this.opacity <= 0) {
+          this.reset();
+          this.y = canvas.height + 10;
+        }
+      }
+
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = this.opacity;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    const sparkles = Array.from({ length: 90 }, () => new Sparkle());
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      sparkles.forEach(s => {
+        s.update();
+        s.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
